@@ -1326,7 +1326,7 @@
                 await new Promise(resolve => setTimeout(resolve, 4500));
                 
                 // For demo purposes, we'll apply professional enhancement filters
-                // In production, this would be replaced with actual AI-enhanced image
+                // with DSLR-like natural color grading
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
                 const img = new Image();
@@ -1336,18 +1336,30 @@
                         canvas.width = img.width;
                         canvas.height = img.height;
                         
-                        // Apply professional enhancement filters to simulate AI processing
-                        ctx.filter = 'contrast(1.3) brightness(1.15) saturate(1.4) hue-rotate(-5deg)';
+                        // Apply DSLR-like enhancement with natural colors
+                        // More subtle contrast and brightness for natural look
+                        ctx.filter = 'contrast(1.15) brightness(1.08) saturate(1.2)';
                         ctx.drawImage(img, 0, 0);
                         
-                        // Add professional sharpening effect
+                        // Add professional sharpening with subtle effect
                         ctx.globalCompositeOperation = 'overlay';
-                        ctx.filter = 'blur(1px)';
+                        ctx.filter = 'blur(0.8px)';
                         ctx.drawImage(canvas, 0, 0);
                         ctx.globalCompositeOperation = 'source-over';
                         
+                        // Add subtle vignette for DSLR effect
+                        const gradient = ctx.createRadialGradient(
+                            canvas.width/2, canvas.height/2, 0,
+                            canvas.width/2, canvas.height/2, canvas.width/1.5
+                        );
+                        gradient.addColorStop(0, 'rgba(0,0,0,0)');
+                        gradient.addColorStop(1, 'rgba(0,0,0,0.15)');
+                        
+                        ctx.fillStyle = gradient;
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        
                         // Convert back to data URL
-                        const enhancedDataUrl = canvas.toDataURL('image/jpeg', 0.95);
+                        const enhancedDataUrl = canvas.toDataURL('image/jpeg', 0.92);
                         resolve(enhancedDataUrl);
                     };
                     
@@ -1396,10 +1408,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
